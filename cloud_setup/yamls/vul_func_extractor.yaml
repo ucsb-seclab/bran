@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: vulfuncextractor
+spec:
+  replicas: 40
+  selector:
+    app: vulfuncextractor-app
+  template:
+    metadata:
+      name: vulfuncextractor-app
+      labels:
+        app: vulfuncextractor-app
+    spec:
+      volumes:
+        - name: kerworkdir
+          emptyDir: {}
+      containers:
+        - name: vulfuncextractor
+          image: git.seclab.cs.ucsb.edu:4567/warmik/kerneline:VulnFunctionExtractor
+          volumeMounts:
+          - name: kerworkdir
+            mountPath: /tmp/workdir
+          stdin: true
+          tty: true
+          resources:
+            limits:
+              cpu: 1
+              memory: 20Gi
+            requests:
+              cpu: 1
+              memory: 20Gi
+      imagePullSecrets:
+        - name: <CHANGE_THIS>

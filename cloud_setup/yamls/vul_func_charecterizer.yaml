@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: vulfunccharecterizer
+spec:
+  replicas: 40
+  selector:
+    app: vulfunccharecterizer-app
+  template:
+    metadata:
+      name: vulfunccharecterizer-app
+      labels:
+        app: vulfunccharecterizer-app
+    spec:
+      volumes:
+        - name: kerworkdirchar
+          emptyDir: {}
+      containers:
+        - name: vulfunccharecterizer
+          image: git.seclab.cs.ucsb.edu:4567/warmik/kerneline:VulnFunctionCharacterizer
+          volumeMounts:
+          - name: kerworkdirchar
+            mountPath: /tmp/workdir
+          stdin: true
+          tty: true
+          resources:
+            limits:
+              cpu: 1
+              memory: 20Gi
+            requests:
+              cpu: 1
+              memory: 20Gi
+      imagePullSecrets:
+        - name: <CHANGE_THIS>
